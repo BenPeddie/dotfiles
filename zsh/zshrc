@@ -1,0 +1,452 @@
+
+# If you come from bash you might have to change your $PATH.
+# export PATH=$HOME/bin:$HOME/.local/bin:/usr/local/bin:$PATH
+
+DOTFILES_DIR="$HOME/dev/dotfiles"
+
+# Path to your Oh My Zsh installation.
+export ZSH="$HOME/.oh-my-zsh"
+
+# Set name of the theme to load --- if set to "random", it will
+# load a random theme each time Oh My Zsh is loaded, in which case,
+# to know which specific one was loaded, run: echo $RANDOM_THEME
+# See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
+ZSH_THEME=""
+# Set list of themes to pick from when loading at random
+# Setting this variable when ZSH_THEME=random will cause zsh to load
+# a theme from this variable instead of looking in $ZSH/themes/
+# If set to an empty array, this variable will have no effect.
+# ZSH_THEME_RANDOM_CANDIDATES=( "robbyrussell" "agnoster" )
+
+# Uncomment the following line to use case-sensitive completion.
+# CASE_SENSITIVE="true"
+
+# Uncomment the following line to use hyphen-insensitive completion.
+# Case-sensitive completion must be off. _ and - will be interchangeable.
+# HYPHEN_INSENSITIVE="true"
+
+# Uncomment one of the following lines to change the auto-update behavior
+# zstyle ':omz:update' mode disabled  # disable automatic updates
+# zstyle ':omz:update' mode auto      # update automatically without asking
+# zstyle ':omz:update' mode reminder  # just remind me to update when it's time
+
+# Uncomment the following line to change how often to auto-update (in days).
+# zstyle ':omz:update' frequency 13
+
+# Uncomment the following line if pasting URLs and other text is messed up.
+# DISABLE_MAGIC_FUNCTIONS="true"
+
+# Uncomment the following line to disable colors in ls.
+# DISABLE_LS_COLORS="true"
+
+# Uncomment the following line to disable auto-setting terminal title.
+# DISABLE_AUTO_TITLE="true"
+
+# Uncomment the following line to enable command auto-correction.
+# ENABLE_CORRECTION="true"
+
+# Uncomment the following line to display red dots whilst waiting for completion.
+# You can also set it to another string to have that shown instead of the default red dots.
+# e.g. COMPLETION_WAITING_DOTS="%F{yellow}waiting...%f"
+# Caution: this setting can cause issues with multiline prompts in zsh < 5.7.1 (see #5765)
+# COMPLETION_WAITING_DOTS="true"
+
+# Uncomment the following line if you want to disable marking untracked files
+# under VCS as dirty. This makes repository status check for large repositories
+# much, much faster.
+# DISABLE_UNTRACKED_FILES_DIRTY="true"
+
+# Uncomment the following line if you want to change the command execution time
+# stamp shown in the history command output.
+# You can set one of the optional three formats:
+# "mm/dd/yyyy"|"dd.mm.yyyy"|"yyyy-mm-dd"
+# or set a custom format using the strftime function format specifications,
+# see 'man strftime' for details.
+# HIST_STAMPS="mm/dd/yyyy"
+
+# Would you like to use another custom folder than $ZSH/custom?
+# ZSH_CUSTOM=/path/to/new-custom-folder
+
+# Which plugins would you like to load?
+# Standard plugins can be found in $ZSH/plugins/
+# Custom plugins may be added to $ZSH_CUSTOM/plugins/
+# Example format: plugins=(rails git textmate ruby lighthouse)
+# Add wisely, as too many plugins slow down shell startup.
+plugins=(
+  git
+  zsh-autosuggestions
+  zsh-syntax-highlighting
+  history-substring-search
+  brew
+  macos
+  zsh-abbr
+)
+source $ZSH/oh-my-zsh.sh
+
+# User configuration
+
+# export MANPATH="/usr/local/man:$MANPATH"
+
+# You may need to manually set your language environment
+# export LANG=en_US.UTF-8
+
+# Preferred editor for local and remote sessions
+# if [[ -n $SSH_CONNECTION ]]; then
+#   export EDITOR='vim'
+# else
+#   export EDITOR='nvim'
+# fi
+
+# Compilation flags
+# export ARCHFLAGS="-arch $(uname -m)"
+
+# Set personal aliases, overriding those provided by Oh My Zsh libs,
+# plugins, and themes. Aliases can be placed here, though Oh My Zsh
+# users are encouraged to define aliases within a top-level file in
+# the $ZSH_CUSTOM folder, with .zsh extension. Examples:
+# - $ZSH_CUSTOM/aliases.zsh
+# - $ZSH_CUSTOM/macos.zsh
+# For a full list of active aliases, run `alias`.
+#
+# Example aliases
+# alias zshconfig="mate ~/.zshrc"
+# alias ohmyzsh="mate ~/.oh-my-zsh"
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+
+# ===================
+# CUSTOM ALIASES
+# ===================
+
+# Better command defaults - commented out to avoid conflicts with development tools
+# alias ls="eza --icons --group-directories-first"
+# alias ll="eza -l --icons --group-directories-first" 
+# alias la="eza -la --icons --group-directories-first"
+# alias cat="bat"
+# alias grep="rg"
+# alias find="fd"
+
+# Alternative commands (use these explicitly when you want the modern tools)
+alias eza-ls="eza --icons --group-directories-first"
+alias eza-ll="eza -l --icons --group-directories-first" 
+alias eza-la="eza -la --icons --group-directories-first"
+alias bat-cat="bat"
+alias rg-grep="rg"
+alias fd-find="fd"
+
+# Quick directory navigation (keep as aliases - too short for abbr)
+alias ..="cd .."
+alias ...="cd ../.."
+alias ....="cd ../../.."
+
+# ===================
+# Abbreviations (expand inline so you see the full command)
+# ===================
+# These are loaded from ~/.config/zsh-abbr/user-abbreviations
+# To add new ones: abbr add <name>="<command>"
+# To list all: abbr list
+# To remove: abbr erase <name>
+
+# Initialize abbreviations on first run
+if [[ ! -f "${ABBR_USER_ABBREVIATIONS_FILE:-$HOME/.config/zsh-abbr/user-abbreviations}" ]]; then
+  mkdir -p "${HOME}/.config/zsh-abbr"
+  cat > "${HOME}/.config/zsh-abbr/user-abbreviations" << 'ABBR_EOF'
+# Git shortcuts
+abbr g="git"
+abbr gs="git status"
+abbr ga="git add"
+abbr gaa="git add -A"
+abbr gc="git commit"
+abbr gcm="git commit -m"
+abbr gp="git push"
+abbr gpf="git push --force-with-lease"
+abbr gl="git pull"
+abbr gd="git diff"
+abbr gds="git diff --stat"
+abbr gco="git checkout"
+abbr gcom="git checkout main"
+abbr gf="git fetch origin"
+abbr gfm="git fetch origin main"
+abbr grm="git rebase main"
+abbr grom="git rebase origin/main"
+abbr grc="git rebase --continue"
+abbr gra="git rebase --abort"
+abbr glo="git log --oneline -5"
+abbr glo10="git log --oneline -10"
+abbr gst="git stash"
+abbr gstp="git stash pop"
+abbr lg="lazygit"
+# GitHub CLI
+abbr pr="gh pr create"
+abbr prv="gh pr view --web"
+abbr prs="gh pr status"
+# AWS / Skaffold
+abbr awsl="aws sso login"
+abbr skr="skaffold run -p local --port-forward --kube-context docker-desktop"
+abbr skup="aws sso login && skaffold run -p local --port-forward --kube-context docker-desktop"
+abbr skd="skaffold delete -p local"
+abbr skclean="skaffold delete -p local && make delete-postgres-pvc"
+abbr skreset="skaffold delete -p local && make delete-postgres-pvc && sleep 10 && skaffold run -p local --port-forward --kube-context docker-desktop"
+abbr skdev="skaffold dev -p local --port-forward --kube-context docker-desktop"
+# Telepresence
+abbr tpc="telepresence connect"
+abbr tpq="telepresence quit"
+abbr tpl="telepresence list"
+# Kubernetes
+abbr k="kubectl"
+abbr kx="kubectx"
+# Emitwise directories
+abbr cdem="cd ~/dev/emitwise-v2"
+abbr cdcap="cd ~/dev/emitwise-v2/cap"
+# Make shortcuts
+abbr mba="make build-api"
+abbr mga="make generate-all"
+abbr mgm="make generate-mocks-all"
+abbr mint="make intercept-cap-api"
+abbr mtest="make test"
+abbr mlint="make lint"
+abbr mfmt="make fmt"
+# Yarn shortcuts
+abbr ys="yarn start"
+abbr yi="yarn install"
+abbr yd="yarn dev"
+abbr ysl="yarn start:local-dev"
+# Database
+abbr pglocal="psql -h localhost -p 5432 -U postgres -d emitwise"
+ABBR_EOF
+fi
+
+# ===================
+# Git Diff Stats
+# ===================
+# Parses numstat from stdin into source vs linguist-generated buckets.
+# Sets caller-scoped vars: _sa _sr _sf (source) and _ga _gr _gf (generated)
+_gdstat_split() {
+  _sa=0 _sr=0 _sf=0
+  _ga=0 _gr=0 _gf=0
+
+  local -a na nr nf
+  local a r f
+  while IFS=$'\t' read -r a r f; do
+    [[ -z "$a" ]] && continue
+    [[ "$a" == "-" ]] && a=0
+    [[ "$r" == "-" ]] && r=0
+    na+=("$a"); nr+=("$r"); nf+=("$f")
+  done
+
+  (( ${#nf[@]} == 0 )) && return
+
+  local -A gmap
+  local line
+  while IFS= read -r line; do
+    if [[ "$line" == *": linguist-generated: true" || "$line" == *": linguist-generated: set" ]]; then
+      gmap[${line%%: linguist-generated:*}]=1
+    fi
+  done < <(printf '%s\n' "${nf[@]}" | git check-attr linguist-generated --stdin 2>/dev/null)
+
+  local i
+  for i in {1..${#nf[@]}}; do
+    if (( ${+gmap[${nf[$i]}]} )); then
+      (( _ga += na[$i], _gr += nr[$i], _gf++ ))
+    else
+      (( _sa += na[$i], _sr += nr[$i], _sf++ ))
+    fi
+  done
+}
+
+function gdstat() {
+  if ! git rev-parse --is-inside-work-tree &>/dev/null; then
+    print "Not a git repository"
+    return 1
+  fi
+
+  local branch fork_point ref
+  local -i ahead=0
+  local -i _sa _sr _sf _ga _gr _gf
+
+  branch=$(git symbolic-ref --short HEAD 2>/dev/null || git rev-parse --short HEAD 2>/dev/null)
+
+  local on_default=false
+  [[ "$branch" == "main" || "$branch" == "master" ]] && on_default=true
+
+  local green=$'\033[32m' red=$'\033[31m' cyan=$'\033[36m'
+  local dim=$'\033[2m' bold=$'\033[1m' reset=$'\033[0m'
+  local sep="${dim}  ─────────────────────────────────────${reset}"
+
+  print ""
+
+  if $on_default; then
+    print "  ${bold}${cyan}${branch}${reset}"
+  else
+    # Find the branch's effective fork point using two signals:
+    #   reflog tail  = commit where the branch was originally created
+    #   merge-base   = where HEAD diverges from the default branch
+    # Use whichever is more recent: after a rebase the merge-base
+    # advances past the creation point; for nested branches (created
+    # from a non-main branch) the reflog point is more recent.
+    local fork_reflog fork_mergebase
+    fork_reflog=$(git reflog show --format='%H' "$branch" 2>/dev/null | tail -1)
+
+    for ref in origin/main origin/master main master; do
+      if git rev-parse --verify --quiet "$ref" &>/dev/null; then
+        fork_mergebase=$(git merge-base HEAD "$ref" 2>/dev/null)
+        break
+      fi
+    done
+
+    if [[ -n "$fork_reflog" && -n "$fork_mergebase" ]]; then
+      if git merge-base --is-ancestor "$fork_reflog" "$fork_mergebase" 2>/dev/null; then
+        fork_point="$fork_mergebase"
+      else
+        fork_point="$fork_reflog"
+      fi
+    else
+      fork_point="${fork_reflog:-$fork_mergebase}"
+    fi
+
+    [[ -n "$fork_point" ]] && ahead=$(git rev-list --count "${fork_point}..HEAD" 2>/dev/null)
+
+    # Extract parent branch name from reflog creation entry
+    local parent_name=""
+    local creation_log=$(git reflog show "$branch" --format='%gs' 2>/dev/null | tail -1)
+    if [[ "$creation_log" == "branch: Created from "* ]]; then
+      parent_name="${creation_log#branch: Created from }"
+      [[ "$parent_name" == "HEAD" ]] && parent_name=""
+    fi
+
+    local info=""
+    if (( ahead > 0 )); then
+      info="${ahead} commit"
+      (( ahead != 1 )) && info+="s"
+      [[ -n "$parent_name" ]] && info+=" from ${parent_name}"
+    fi
+    if [[ -n "$fork_point" ]]; then
+      local base_age=$(git log -1 --format='%cr' "$fork_point" 2>/dev/null)
+      if [[ -n "$info" ]]; then
+        info+=" (${base_age})"
+      else
+        info="branched ${base_age}"
+      fi
+    fi
+
+    if [[ -n "$info" ]]; then
+      print "  ${bold}${cyan}${branch}${reset}  ${dim}${info}${reset}"
+    else
+      print "  ${bold}${cyan}${branch}${reset}"
+    fi
+  fi
+
+  print "$sep"
+
+  # --- Committed changes (branch only) ---
+  local -i csa=0 csr=0 csf=0 cga=0 cgr=0 cgf=0
+  if ! $on_default && [[ -n "$fork_point" ]]; then
+    _gdstat_split < <(git diff "$fork_point" HEAD --numstat 2>/dev/null)
+    csa=$_sa csr=$_sr csf=$_sf cga=$_ga cgr=$_gr cgf=$_gf
+
+    printf "  ${bold}Committed${reset}   ${green}+%-7d${reset}${red}-%-7d${reset}${dim}%d file%s${reset}\n" "$csa" "$csr" "$csf" "$( (( csf != 1 )) && echo s)"
+    if (( cgf > 0 )); then
+      printf "  ${dim}  generated +%-7d-%-7d%d file%s${reset}\n" "$cga" "$cgr" "$cgf" "$( (( cgf != 1 )) && echo s)"
+    fi
+  fi
+
+  # --- Working changes (staged + unstaged + untracked) ---
+  local work_numstat ufile ulines
+  work_numstat=$(git diff HEAD --numstat 2>/dev/null)
+
+  while IFS= read -r ufile; do
+    [[ -z "$ufile" ]] && continue
+    ulines=$(wc -l < "$ufile" 2>/dev/null)
+    ulines=${ulines// /}
+    work_numstat+=$'\n'"${ulines}"$'\t'"0"$'\t'"${ufile}"
+  done < <(git ls-files --others --exclude-standard 2>/dev/null)
+
+  _gdstat_split <<< "$work_numstat"
+  local -i wsa=$_sa wsr=$_sr wsf=$_sf wga=$_ga wgr=$_gr wgf=$_gf
+
+  if (( wsa > 0 || wsr > 0 || wga > 0 || wgr > 0 )); then
+    printf "  ${bold}Working${reset}     ${green}+%-7d${reset}${red}-%-7d${reset}${dim}%d file%s${reset}\n" "$wsa" "$wsr" "$wsf" "$( (( wsf != 1 )) && echo s)"
+    if (( wgf > 0 )); then
+      printf "  ${dim}  generated +%-7d-%-7d%d file%s${reset}\n" "$wga" "$wgr" "$wgf" "$( (( wgf != 1 )) && echo s)"
+    fi
+  else
+    print "  ${dim}Working     clean${reset}"
+  fi
+
+  # --- Total (branch only, source-only) ---
+  if ! $on_default && [[ -n "$fork_point" ]]; then
+    print "$sep"
+    printf "  ${bold}Total${reset}       ${green}+%-7d${reset}${red}-%-7d${reset}\n" "$(( csa + wsa ))" "$(( csr + wsr ))"
+    if (( cgf + wgf > 0 )); then
+      printf "  ${dim}  generated +%-7d-%-7d${reset}\n" "$(( cga + wga ))" "$(( cgr + wgr ))"
+    fi
+  fi
+
+  print ""
+}
+
+# ===================
+# Prompt Configuration
+# ===================
+# Toggle between Powerlevel10k and Starship:
+#   USE_POWERLEVEL10K=true  -> Powerlevel10k with AWS SSO segment
+#   USE_POWERLEVEL10K=false -> Starship (simpler, no AWS SSO indicator)
+USE_POWERLEVEL10K=true
+
+if [[ "$USE_POWERLEVEL10K" == "true" ]]; then
+    # Powerlevel10k - load config first for instant prompt
+    [[ -f ~/.p10k.zsh ]] && source ~/.p10k.zsh
+    source /opt/homebrew/share/powerlevel10k/powerlevel10k.zsh-theme
+else
+    # Starship prompt (fallback)
+    eval "$(starship init zsh)"
+fi
+
+
+# Skaffold configuration
+export SKAFFOLD_ITERATIVE_STATUS_CHECK=false
+export SKAFFOLD_BUILD_CONCURRENCY=0
+
+# ===================
+# Go Configuration
+# ===================
+export GOENV_ROOT="$HOME/.goenv"
+export PATH="$GOENV_ROOT/bin:$PATH"
+eval "$(goenv init -)"
+export PATH="$GOROOT/bin:$PATH"
+export PATH="$GOPATH/bin:$PATH"
+
+# The following lines have been added by Docker Desktop to enable Docker CLI completions.
+fpath=(/Users/bpeddie/.docker/completions $fpath)
+autoload -Uz compinit
+compinit
+# End of Docker CLI completions
+export PATH="$HOME/.local/bin:$PATH"
+
+# NVM Configuration
+export NVM_DIR="$HOME/.nvm"
+[ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && \. "/opt/homebrew/opt/nvm/nvm.sh"  # This loads nvm
+[ -s "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
+
+# ===================
+# Default Directory & Named Directories
+# ===================
+# Create a named directory for emitwise-v2 (shows as ~emitwise instead of ~/dev/emitwise-v2)
+hash -d emitwise="$HOME/dev/emitwise-v2"
+
+# Start in emitwise-v2 if it exists and we're in home directory
+if [[ "$PWD" == "$HOME" && -d "$HOME/dev/emitwise-v2" ]]; then
+  cd "$HOME/dev/emitwise-v2"
+fi
+
+
+# Local overrides and secrets (gitignored — see zsh/.zshrc.local.template)
+[[ -f "$DOTFILES_DIR/zsh/.zshrc.local" ]] && source "$DOTFILES_DIR/zsh/.zshrc.local"
+
+# Cursor: today's spend in prompt (Enterprise Admin API; scripts/cursor-spend-today.py)
+_cursor_spend_precmd() {
+  CURSOR_SPEND_PROMPT="$("$DOTFILES_DIR/scripts/cursor-spend-today.py" 2>/dev/null)" || true
+  export CURSOR_SPEND_PROMPT
+}
+precmd_functions+=(_cursor_spend_precmd)

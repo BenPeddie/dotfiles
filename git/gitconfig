@@ -1,0 +1,21 @@
+[user]
+	name = BenPeddie
+	email = ben@emitwise.com
+[core]
+	pager = less -R
+[interactive]
+	diffFilter = delta --color-only
+[delta]
+	navigate = true
+[merge]
+	conflictstyle = diff3
+[diff]
+	colorMoved = default
+[pager]
+	log = false
+	show = false
+	diff = false
+	branch = false
+	status = false
+[branch]
+	sort = committerdate

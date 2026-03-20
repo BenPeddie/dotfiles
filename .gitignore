@@ -1,0 +1,11 @@
+# OS files
+.DS_Store
+
+# Editor files
+*.swp
+*.swo
+*~
+/zsh/.zshrc.local
+
+# Backup files created during install
+# (these are stored in ~/.dotfiles_backup, not in this repo)

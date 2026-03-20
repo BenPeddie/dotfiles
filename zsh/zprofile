@@ -1,0 +1,21 @@
+
+# Homebrew
+eval "$(/opt/homebrew/bin/brew shellenv)"
+
+# ===================
+# Go Configuration (must come after Homebrew to override its PATH)
+# ===================
+export GOENV_ROOT="$HOME/.goenv"
+export GOENV_PATH_ORDER="front"
+
+# Add goenv to PATH
+export PATH="$GOENV_ROOT/bin:$PATH"
+
+# Initialize goenv and add shims
+if command -v goenv 1>/dev/null 2>&1; then
+  eval "$(goenv init -)"
+  # Ensure shims are at the front of PATH (to override Homebrew's Go)
+  if [ -d "$GOENV_ROOT/shims" ]; then
+    export PATH="$GOENV_ROOT/shims:$PATH"
+  fi
+fi
