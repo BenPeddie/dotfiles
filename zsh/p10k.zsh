@@ -29,6 +29,7 @@
     go_version              # go version
     context                 # user@hostname
     time                    # current time
+    engagectl
   )
 
   # =============================================================================
@@ -309,3 +310,15 @@
 
 # Tell p10k that this file was sourced
 (( ${+functions[p10k]} )) || source /opt/homebrew/share/powerlevel10k/powerlevel10k.zsh-theme
+
+  # engagectl environment segment
+  function prompt_engagectl() {
+    local config="$HOME/.engagectl/config.json"
+    [[ -r "$config" ]] || return
+    local env
+    env=$(command grep -o '"current_env"[[:space:]]*:[[:space:]]*"[^"]*"' "$config" 2>/dev/null)
+    env=${env#*: \"}
+    env=${env%\"}
+    [[ -n "$env" ]] || return
+    p10k segment -f 208 -i 'e50' -t "$env"
+  }
