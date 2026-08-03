@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "hooks": {
+    "afterFileEdit": [
+      {
+        "command": "./hooks/format-ts.sh",
+        "matcher": ".*\\.(ts|tsx)$"
+      }
+    ],
+    "preToolUse": [
+      {
+        "command": "rtk hook cursor",
+        "matcher": "Shell"
+      }
+    ]
+  }
+}

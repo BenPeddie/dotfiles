@@ -1,0 +1,43 @@
+{
+  "mcpServers": {
+    "github": {
+      "command": "/Users/bpeddie/dev/dotfiles/cursor/scripts/github-mcp.sh"
+    },
+    "Linear": {
+      "url": "https://mcp.linear.app/mcp",
+      "headers": {}
+    },
+    "recall": {
+      "command": "npx",
+      "args": [
+        "tsx",
+        "/Users/bpeddie/dev/recall/mcp/index.ts"
+      ],
+      "cwd": "/Users/bpeddie/dev/recall",
+      "env": {
+        "DATABASE_URL": "postgresql://recall:recall@127.0.0.1:55432/engineering_context"
+      }
+    },
+    "slack": {
+      "command": "/Users/bpeddie/dev/dotfiles/cursor/scripts/slack-mcp.sh"
+    },
+    "fathom": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "mcp-remote@latest",
+        "https://api.fathom.ai/mcp"
+      ]
+    },
+    "clickstack": {
+      "url": "https://mcp.clickhouse.cloud/clickstack",
+      "headers": {
+        "x-service-id": "560f9d23-ba0d-4e3b-9d23-f27950d29140"
+      }
+    },
+    "gopls": {
+      "command": "/Users/bpeddie/dev/dotfiles/cursor/scripts/gopls-mcp.sh",
+      "cwd": "/Users/bpeddie/dev/emitwise-v2"
+    }
+  }
+}

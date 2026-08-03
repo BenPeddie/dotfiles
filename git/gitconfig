@@ -19,3 +19,6 @@
 	status = false
 [branch]
 	sort = committerdate
+[credential "https://dev.azure.com"]
+	useHttpPath = true
+	helper = /usr/local/share/gcm-core/git-credential-manager

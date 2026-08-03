@@ -29,6 +29,13 @@ dotfiles/
 │   └── starship.toml  # Starship prompt configuration (alternative)
 ├── git/
 │   └── gitconfig      # Git configuration
+├── cursor/            # Cursor IDE personal config (symlinked into ~/.cursor/)
+│   ├── mcp.json       # MCP server config (secrets via env vars)
+│   ├── skills/        # Personal agent skills
+│   ├── agents/        # Personal agents
+│   ├── hooks.json     # Hook config (PostToolUse formatter)
+│   ├── hooks/         # Hook scripts
+│   └── scripts/       # MCP helper scripts
 ├── scripts/
 │   ├── aws-sso-expiry.sh      # AWS SSO expiry checker (standalone)
 │   └── cursor-spend-today.py  # Cursor spend today (Enterprise Admin API)
@@ -101,9 +108,73 @@ Results are cached under `~/.cache/cursor-spend-today.json` (default TTL 15 minu
 3. Picks the credential with the latest expiry when multiple exist
 4. Renders a color-coded segment in your prompt
 
-## Reverting Changes
+## Cursor Personal Config
 
-Original config files are backed up to `~/.dotfiles_backup/<timestamp>/` during installation.
+Personal Cursor IDE config lives in `cursor/` and is symlinked into `~/.cursor/` by `install.sh`. This keeps your AI tooling version-controlled alongside your other dotfiles.
+
+### What's managed
+
+| Type | Path in dotfiles | Symlinked to |
+|------|-----------------|--------------|
+| MCP servers | `cursor/mcp.json` | `~/.cursor/mcp.json` |
+| Skills | `cursor/skills/<name>/` | `~/.cursor/skills/<name>/` |
+| Agents | `cursor/agents/<name>.md` | `~/.cursor/agents/<name>.md` |
+| Hooks config | `cursor/hooks.json` | `~/.cursor/hooks.json` |
+| Hook scripts | `cursor/hooks/<name>` | `~/.cursor/hooks/<name>` |
+
+### Skills included
+
+| Skill | Invoke | Description |
+|-------|--------|-------------|
+| `project-setup` | `/project-setup` | Load emitwise-v2 project context at session start |
+| `pr` | `/pr` | Create a PR following team standards |
+| `plan` | `/plan` | Write a plan document before implementing |
+| `continue` | `/continue` | Resume work after a PR is merged |
+| `tdd` | auto | TDD red-green-refactor workflow |
+| `testing` | auto | Testing patterns and best practices |
+| `react-testing` | auto | React + Vitest + Testing Library patterns |
+| `front-end-testing` | auto | Frontend testing strategy |
+| `typescript-strict` | auto | TypeScript strict mode patterns |
+| `planning` | auto | Planning in small increments |
+| `refactoring` | auto | Refactoring assessment methodology |
+| `expectations` | auto | Documentation and expectations |
+| `ci-debugging` | auto | Diagnosing CI failures |
+| `functional` | auto | Functional programming patterns |
+| `mutation-testing` | auto | Mutation testing for test quality |
+| `clickstack-dashboard` | auto | Manage ClickStack/HyperDX dashboards |
+| `watch-pr-ci` | auto | Monitor PR CI checks and auto-fix failures |
+
+### Agents included
+
+| Agent | Description |
+|-------|-------------|
+| `pr-reviewer` | Systematic PR review against quality standards |
+| `tdd-guardian` | TDD compliance coach and enforcer |
+| `refactor-scan` | Code quality and refactoring opportunities |
+| `progress-guardian` | Track progress through plan files |
+
+### MCP servers and secrets
+
+All secrets are referenced as `$ENV_VAR` in `cursor/mcp.json` -- never hardcoded. They are populated from `zsh/.zshrc.local` (gitignored). Required env vars (see `zsh/.zshrc.local.template`):
+
+- `GITHUB_PERSONAL_ACCESS_TOKEN` -- GitHub MCP
+- `LAUNCHDARKLY_MCP_API_KEY` -- LaunchDarkly MCP (see `cursor/scripts/launchdarkly-mcp.sh`)
+- `CLICKHOUSE_HOST`, `CLICKHOUSE_USER`, `CLICKHOUSE_PASSWORD`, etc. -- ClickHouse MCP
+- `SLACK_BOT_TOKEN`, `SLACK_TEAM_ID` -- Slack MCP (see `cursor/scripts/slack-mcp.sh`)
+
+### Adding a new skill
+
+```bash
+mkdir -p cursor/skills/my-skill
+# Write cursor/skills/my-skill/SKILL.md with YAML frontmatter (name + description)
+./install.sh  # re-run to symlink the new skill
+```
+
+### Project-level Cursor config
+
+Project-level rules/skills/agents in `emitwise-v2/.cursor/` are **team-shared** and managed in that repo. Do not put personal-only config there.
+
+## Reverting Changes
 
 To revert to Starship:
 ```bash

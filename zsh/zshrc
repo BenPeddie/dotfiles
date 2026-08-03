@@ -4,8 +4,27 @@
 
 DOTFILES_DIR="$HOME/dev/dotfiles"
 
+# ===================
+# Stale lock reaper
+# ===================
+# zsh-abbr (via zsh-job-queue) and zsh's own compinit both use file-based
+# cross-session locks/caches in $TMPDIR and $HOME. If a shell is ever force-quit
+# (closed tab, crash, sleep/wake) mid-init, it can leave a lock file/dir behind
+# that every future shell then waits out (job-queue: up to 30s each) or that
+# poisons completion caching. Reap anything stale before those systems load.
+find "${TMPDIR:-/tmp}zsh-job-queue" -mindepth 1 -mmin +1 -delete 2>/dev/null
+find "$HOME" -maxdepth 1 -name '.zcompdump*.lock' -mmin +1 -exec rm -rf {} + 2>/dev/null
+
 # Path to your Oh My Zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
+
+# Docker Desktop CLI completions — added to fpath *before* Oh My Zsh loads so
+# its single compinit run (below) picks these up too. Do not add a second,
+# separate `compinit` call later: Oh My Zsh already caches its completion dump
+# keyed on the exact contents of $fpath, and running compinit twice (once here,
+# once more with a different fpath) forces a full uncached rebuild each time —
+# this alone was costing ~15-30s of extra shell startup time.
+fpath=(/Users/bpeddie/.docker/completions $fpath)
 
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time Oh My Zsh is loaded, in which case,
@@ -411,23 +430,33 @@ export SKAFFOLD_BUILD_CONCURRENCY=0
 # ===================
 # Go Configuration
 # ===================
+# goenv is already initialized by zsh/zprofile for login shells (which is how
+# iTerm2/Terminal normally spawn new windows/tabs). Re-running `goenv init -`
+# here unconditionally shelled out and re-evaluated it a second time on every
+# single shell startup for no benefit, so we only do it if it hasn't happened yet.
 export GOENV_ROOT="$HOME/.goenv"
-export PATH="$GOENV_ROOT/bin:$PATH"
-eval "$(goenv init -)"
+if [[ -z "$GOENV_SHELL" ]] && command -v goenv &>/dev/null; then
+  export PATH="$GOENV_ROOT/bin:$PATH"
+  eval "$(goenv init -)"
+fi
 export PATH="$GOROOT/bin:$PATH"
 export PATH="$GOPATH/bin:$PATH"
-
-# The following lines have been added by Docker Desktop to enable Docker CLI completions.
-fpath=(/Users/bpeddie/.docker/completions $fpath)
-autoload -Uz compinit
-compinit
-# End of Docker CLI completions
 export PATH="$HOME/.local/bin:$PATH"
 
-# NVM Configuration
+# NVM Configuration (lazy-loaded)
+# Sourcing nvm.sh eagerly costs ~400ms on *every* shell startup (version-switch
+# detection, .nvmrc scanning, etc.) even in shells that never touch Node. Instead,
+# defer that cost to the first time node/npm/npx/yarn/nvm is actually invoked.
 export NVM_DIR="$HOME/.nvm"
-[ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && \. "/opt/homebrew/opt/nvm/nvm.sh"  # This loads nvm
-[ -s "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
+_nvm_lazy_load() {
+  unset -f nvm node npm npx yarn corepack _nvm_lazy_load
+  [ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && \. "/opt/homebrew/opt/nvm/nvm.sh"
+  [ -s "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm"
+}
+for _nvm_cmd in nvm node npm npx yarn corepack; do
+  eval "${_nvm_cmd}() { _nvm_lazy_load; ${_nvm_cmd} \"\$@\"; }"
+done
+unset _nvm_cmd
 
 # ===================
 # Default Directory & Named Directories

@@ -9,3 +9,6 @@
 
 # Backup files created during install
 # (these are stored in ~/.dotfiles_backup, not in this repo)
+
+# Cursor reference material (cloned upstream repos, not our code)
+/cursor/reference/
